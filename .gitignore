@@ -1,6 +1,6 @@
 .DS_Store
-stages/*
-!stages/*.sample.yml
+config/stages/*
+!config/stages/*.sample.yml
 
 # package directories
 node_modules

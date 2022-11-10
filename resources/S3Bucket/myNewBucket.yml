@@ -12,10 +12,10 @@
 #
 # This allows to re-use the resource name in other resources definitions
 
-# Type: AWS::S3::Bucket
-# Properties:
-#   BucketName: my-new-bucket
-# Outputs:
-#  NewOutput:
-#    Description: "Description for the output"
-#    Value: "Some output value"
+Type: AWS::S3::Bucket
+Properties:
+  BucketName: my-new-bucket
+Outputs:
+  NewOutput:
+    Description: 'Description for the output'
+    Value: 'Some output value'

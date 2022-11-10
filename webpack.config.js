@@ -1,38 +1,81 @@
+/* eslint-disable */
+'use strict'
+const fs = require('fs')
 const path = require('path')
+
+const { DefinePlugin } = require('webpack')
+
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+
 const slsw = require('serverless-webpack')
-const nodeExternals = require('webpack-node-externals')
+
+if (slsw.lib.webpack.isLocal) {
+  console.log('Running locally')
+}
 
 module.exports = {
   entry: slsw.lib.entries,
-  target: 'node',
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
+  devtool: slsw.lib.webpack.isLocal ? 'source-map' : 'cheap-source-map',
   optimization: {
-    // We no not want to minimize our code.
-    minimize: false
+    minimize: true,
+    mangleExports: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        include: /vendor/,
+      }),
+    ],
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          priority: 10,
+          enforce: true,
+        },
+      },
+    },
   },
-  performance: {
-    // Turn off size warnings for entry points
-    hints: false
+  externalsPresets: { node: true },
+  externals: {
+    'aws-sdk': 'aws-sdk',
   },
-  devtool: 'nosources-source-map',
-  externals: [nodeExternals()],
+  target: 'node',
+  resolve: {
+    extensions: ['.ts', '.js'],
+    plugins: [new TsconfigPathsPlugin()],
+  },
+  stats: {
+    modules: false,
+    warnings: false,
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
+        test: /\.ts$/,
+        include: path.resolve(__dirname, 'src'),
         use: [
           {
-            loader: 'babel-loader'
-          }
-        ]
-      }
-    ]
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+        exclude: /node_modules/,
+      },
+    ],
   },
-  output: {
-    libraryTarget: 'commonjs2',
-    path: path.join(__dirname, '.webpack'),
-    filename: '[name].js',
-    sourceMapFilename: '[file].map'
-  }
+  plugins: [
+    new DefinePlugin({
+      GLOBAL_VAR_SERVICE_NAME: JSON.stringify(slsw.lib.serverless.service.service),
+      GLOBAL_VAR_NODE_ENV: JSON.stringify(process.env.STAGE || 'local'),
+      GLOBAL_VAR_REGION: JSON.stringify(slsw.lib.options.region || 'us-east-2'),
+      GLOBAL_VAR_STAGE: JSON.stringify(process.env.STAGE || 'local'),
+      GLOBAL_VAR_IS_LOCAL: JSON.stringify(slsw.lib.webpack.isLocal),
+    }),
+  ],
 }

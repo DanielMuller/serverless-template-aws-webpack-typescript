@@ -1,43 +1,45 @@
 service: test-updates
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: "2.57.0"
-variablesResolutionMode: 20210326
+frameworkVersion: '3.24.1'
+configValidationMode: error
 
 custom:
-  stage: ${file(stages/${self:provider.stage}.yml)}
-# Add custom variables here. You can re-use variables defined in the stage yml
-# customStageVar: ${self:custom.stage.customStageVar}
+  stage: ${file(config/stages/${self:provider.stage}.yml)}
+  # Add custom variables here. You can re-use variables defined in the stage yml
+  # customStageVar: ${self:custom.stage.customStageVar}
   webpack:
+    webpackConfig: ./webpack.config.js
     includeModules:
       forceExclude:
         - aws-sdk
-  accountId: ${file(lib/aws.js):accountId}
+    packager: 'npm'
 
 plugins:
-  - serverless-deployment-bucket
   - serverless-webpack
+  - serverless-deployment-bucket
 package:
   individually: true
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, self:custom.stage.region}
   profile: ${self:custom.stage.profile}
   memorySize: ${self:custom.stage.lambda.memorySize, '128'}
   timeout: ${self:custom.stage.lambda.timeout, '10'}
-  lambdaHashingVersion: 20201221
   logRetentionInDays: ${self:custom.stage.lambda.logRetention, 1}
-  iamRoleStatements: ${file(config/iamRoleStatements.yml)}
+  iam: ${file(serverless.iam.yml)}
   deploymentBucket:
-    name: com.serverless.${self:custom.accountId}.${self:provider.region}.deploys
+    name: com.serverless.${aws:accountId}.${aws:region}.deploys
     blockPublicAccess: true
+    skipPolicySetup: true
+    serverSideEncryption: AES256
   environment:
-    SERVERLESS_REGION: ${self:provider.region}
+    SERVERLESS_REGION: ${aws:region}
 
-functions: ${file(lib/config.js):functions}
+functions: ${file(helpers/main.js):getFunctions}
 resources:
-  Resources: ${file(lib/config.js):resources}
-  Outputs: ${file(lib/config.js):outputs}
+  Resources: ${file(helpers/main.js):getResources}
+#  Outputs: ${file(helpers/main.js):getOutputs}

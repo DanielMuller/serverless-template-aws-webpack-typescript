@@ -1,7 +1,9 @@
-handler: services/hello.handler
+handler: src/handlers/hello.handler
 name: ${self:service}-hello # Don't use environment in name. This will fail if your development and production AWS account is the same
 memorySize: ${self:custom.stage.lambda.memorySize} # Overwrites the global lambda config
 timeout: ${self:custom.stage.lambda.timeout} # Overwrites the global lambda config
+# logRetentionInDays: 5 # If different from the global definition
+
 ## The following are a few example events you can configure
 ## NOTE: Please make sure to change your handler code to work with those events
 ## Check the event documentation for details
@@ -34,7 +36,9 @@ timeout: ${self:custom.stage.lambda.timeout} # Overwrites the global lambda conf
 ## Define function environment variables here
 # environment:
 #   variable2: value2
-## You can even Cloudformation properties related to the function
+## You can even add Cloudformation properties related to the function
 # properties:
 #   logGroup:
-#     RetentionInDays: ${self:custom.stage.lambda.logRetention}
+#     Type: AWS::Logs::LogGroup
+#     Properties:
+#       RetentionInDays: 10
