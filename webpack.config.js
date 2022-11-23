@@ -40,9 +40,7 @@ module.exports = {
     },
   },
   externalsPresets: { node: true },
-  externals: {
-    'aws-sdk': 'aws-sdk',
-  },
+  externals: [/@aws-sdk\/.+/],
   target: 'node',
   resolve: {
     extensions: ['.ts', '.js'],

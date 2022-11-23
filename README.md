@@ -2,7 +2,7 @@
 
 Boilerplate template for [Serverless](https://serverless.com) allowing to easily separate each function into it's own dedicated file or folder.
 
-The template is using [Typescript](https://www.typescriptlang.org/) with [NodeJS 16.x](https://nodejs.org/) and it uses [webpack plugin](https://github.com/serverless-heaven/serverless-webpack) to reduce each packaged function.
+The template is using [Typescript](https://www.typescriptlang.org/) with [NodeJS 18.x](https://nodejs.org/) and it uses [webpack plugin](https://github.com/serverless-heaven/serverless-webpack) to reduce each packaged function.
 
 ## Project creation
 
