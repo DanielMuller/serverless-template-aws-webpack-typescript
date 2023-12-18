@@ -1,9 +1,9 @@
 {
   "name": "aws-webpack-nodejs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Boilerplate for Serverless.com framework",
   "engines": {
-    "node": ">=18.12 <19"
+    "node": ">=20 <21"
   },
   "scripts": {
     "test": "npm run lint",
@@ -19,28 +19,28 @@
   "license": "ISC",
   "devDependencies": {
     "@aws-sdk/types": "3.188.0",
-    "@serverless/typescript": "3.25.0",
-    "@types/aws-lambda": "8.10.108",
-    "@typescript-eslint/eslint-plugin": "5.44.0",
-    "@typescript-eslint/parser": "5.44.0",
+    "@serverless/typescript": "3.38.0",
+    "@types/aws-lambda": "8.10.130",
+    "@typescript-eslint/eslint-plugin": "6.14.0",
+    "@typescript-eslint/parser": "6.14.0",
     "clean-webpack-plugin": "4.0.0",
-    "eslint": "8.28.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-config-standard": "17.0.0",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsdoc": "39.6.2",
-    "eslint-plugin-n": "15.5.1",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-config-standard": "17.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-jsdoc": "46.9.1",
+    "eslint-plugin-n": "16.4.0",
     "eslint-plugin-promise": "6.1.1",
-    "fork-ts-checker-webpack-plugin": "7.2.13",
-    "prettier": "2.8.0",
-    "serverless": "3.25.0",
+    "fork-ts-checker-webpack-plugin": "9.0.2",
+    "prettier": "3.1.1",
+    "serverless": "3.38.0",
     "serverless-deployment-bucket": "1.6.0",
-    "serverless-webpack": "5.11.0",
-    "ts-loader": "9.4.1",
-    "tsconfig-paths-webpack-plugin": "4.0.0",
-    "typescript": "4.9.3",
-    "webpack": "5.75.0",
-    "webpack-cli": "5.0.0"
+    "serverless-webpack": "5.13.0",
+    "ts-loader": "9.5.1",
+    "tsconfig-paths-webpack-plugin": "4.1.0",
+    "typescript": "5.3.3",
+    "webpack": "5.89.0",
+    "webpack-cli": "5.1.4"
   },
   "dependencies": {
     "lambda-log": "3.1.0"
